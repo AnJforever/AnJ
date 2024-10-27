@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  margin: 0;
+  min-width: 250px;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 60px; /* Add padding to avoid overlap with the add button */
+}
+
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 60px;
+  list-style-type: none;
+  background: rgba(255, 255, 255, 0.8); /* Make it semi-transparent */
+  font-size: 18px;
+  transition: 0.2s;
+  user-select: none;
+}
+
+ul li:nth-child(odd) {
+  background: rgba(249, 249, 249, 0.8); /* Semi-transparent background */
+}
+
+ul li:hover {
+  background: rgba(221, 221, 221, 0.8);
+}
+
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+}
+
+.close:hover {
+  background-color: #4d28a3eb;
+  color: white;
+}
+
+.header {
+  background-color: rgba(30, 103, 187, 0.8);
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+
+input {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+}
+
+.addBtn {
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.addBtn:hover {
+  background-color: #bbb;
+}
+
+img.bottom-left {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 150px;
+  height: auto;
+  margin: 10px;
+}
+</style>
+</head>
+<body>
+
+<!-- Background video -->
+<video autoplay muted loop class="video-bg">
+  <source src="images/bucketlist.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<div id="myDIV" class="header">
+  <h2 style="margin:5px">Container of lists (add anything you want)</h2>
+  <input type="text" id="myInput" placeholder="Title...">
+  <span onclick="newElement()" class="addBtn">Add</span>
+</div>
+
+<ul id="myUL">
+</ul>
+
+<!-- Image placed in the bottom-left corner -->
+<img src="images/cats.jpg" alt="Cats" class="bottom-left">
+
+<script>
+// Function to save list to localStorage
+function saveList() {
+  let listItems = [];
+  let lis = document.querySelectorAll('#myUL li');
+  lis.forEach((li) => {
+    listItems.push({
+      text: li.textContent.replace('\u00D7', ''),  // Remove close button text
+      checked: li.classList.contains('checked')
+    });
+  });
+  localStorage.setItem('todoList', JSON.stringify(listItems));
+}
+
+// Function to load list from localStorage
+function loadList() {
+  let listItems = JSON.parse(localStorage.getItem('todoList')) || [];
+  listItems.forEach(item => {
+    let li = document.createElement('li');
+    li.textContent = item.text;
+    if (item.checked) {
+      li.classList.add('checked');
+    }
+    addCloseButton(li);
+    document.getElementById('myUL').appendChild(li);
+  });
+}
+
+// Create a "close" button and append it to each list item
+function addCloseButton(li) {
+  var span = document.createElement('SPAN');
+  var txt = document.createTextNode('\u00D7');
+  span.className = 'close';
+  span.appendChild(txt);
+  li.appendChild(span);
+  
+  span.onclick = function() {
+    var div = this.parentElement;
+    div.style.display = 'none';
+    saveList();  // Save after deletion
+  };
+}
+
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+    saveList();  // Save after checking/unchecking
+  }
+}, false);
+
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+  var li = document.createElement('li');
+  var inputValue = document.getElementById('myInput').value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert('You must write something!');
+  } else {
+    document.getElementById('myUL').appendChild(li);
+    addCloseButton(li);
+    saveList();  // Save after adding new element
+  }
+  document.getElementById('myInput').value = '';
+}
+
+// Load the list on page load
+loadList();
+</script>
+
+</body>
+</html>

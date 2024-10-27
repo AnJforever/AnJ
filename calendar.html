@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown of Romance</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+            margin: 0;
+            padding-top: 60px;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.8rem;
+            color: #4a4a4a;
+        }
+        .countdown-container {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 2rem;
+        }
+        .event-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .time-circle {
+            width: 80px;
+            height: 80px;
+            border: 6px solid #9c27b0;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9c27b0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .time-unit {
+            font-size: 0.8rem;
+            color: #4a4a4a;
+        }
+        .tooltip {
+            font-size: 0.9rem;
+            color: #333;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>Countdown of Romance</header>
+    <div id="countdownContainer">
+        <!-- Countdown sections will be generated here -->
+    </div>
+
+    <script>
+        let events = [
+            { 
+                name: "Valentine's Day", 
+                date: "2025-02-14T00:00:00", 
+                tooltip: "Celebrated worldwide as a day for expressing love and affection between partners. Common traditions include exchanging gifts, cards, and romantic dinners." 
+            },
+            { 
+                name: "White Day (Asia)", 
+                date: "2025-03-14T00:00:00", 
+                tooltip: "Observed in Japan, South Korea, and Taiwan as a day when men give gifts back to women who gave them presents on Valentine's Day." 
+            },
+            { 
+                name: "Chinese Valentine's Day (Qixi Festival)", 
+                date: "2025-08-10T00:00:00", 
+                tooltip: "A romantic festival celebrated in China, based on a folk tale about star-crossed lovers. Traditionally involves stargazing and exchanging small gifts(this is what google said)." 
+            },
+            { 
+                name: "Sweetest Day (USA)", 
+                date: "2025-10-18T00:00:00", 
+                tooltip: "its like honeymoon but u dont have to have a ring in your finger to celebrate." 
+            },
+            { 
+                name: "Kiss Day (India)", 
+                date: "2025-02-13T00:00:00", 
+                tooltip: "U GONNA NEED A TOOOOOONS OF LIP PALM XDDDDDD" 
+            },
+            { 
+                name: "Hug Day (India)", 
+                date: "2025-02-12T00:00:00", 
+                tooltip: "I DEMAND HUGGGG." 
+            },
+            { 
+                name: "The Day Angel Fell on This Earth", 
+                date: "2025-01-01T00:00:00", 
+                tooltip: "The day that you will be 1 step closer to spread your wings and fly away into a life." 
+            },
+            { 
+                name: "The Devil Entered This Earth", 
+                date: "2025-08-19T00:00:00", 
+                tooltip: "potatooooooooooooooooooooo." 
+            },
+            { 
+                name: "We Fell in Love Anniversary (1st Year)", 
+                date: "2025-07-23T00:00:00", 
+                tooltip: "Smack me on the head with a hammer if i ever forget" 
+            }
+        ];
+
+        // Sort events by date (soonest first)
+        events.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        function createCountdown(event) {
+            const container = document.createElement('div');
+            container.classList.add('countdown-container');
+            
+            const title = document.createElement('h2');
+            title.classList.add('event-title');
+            title.textContent = `Time left until ${event.name}`;
+            
+            const timer = document.createElement('div');
+            timer.classList.add('timer');
+            
+            const days = document.createElement('div');
+            days.classList.add('time-circle');
+            days.innerHTML = `<span id="${event.name}-days">0</span><span class="time-unit">DAYS</span>`;
+            
+            const hours = document.createElement('div');
+            hours.classList.add('time-circle');
+            hours.innerHTML = `<span id="${event.name}-hours">0</span><span class="time-unit">HOURS</span>`;
+            
+            const minutes = document.createElement('div');
+            minutes.classList.add('time-circle');
+            minutes.innerHTML = `<span id="${event.name}-minutes">0</span><span class="time-unit">MINUTES</span>`;
+            
+            const tooltip = document.createElement('p');
+            tooltip.classList.add('tooltip');
+            tooltip.textContent = event.tooltip;
+            
+            timer.append(days, hours, minutes);
+            container.append(title, timer, tooltip);
+            document.getElementById('countdownContainer').appendChild(container);
+
+            return { days, hours, minutes };
+        }
+
+        function startCountdown(event) {
+            const elements = createCountdown(event);
+            const targetDate = new Date(event.date).getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const timeLeft = targetDate - now;
+
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+
+                elements.days.querySelector("span").textContent = days;
+                elements.hours.querySelector("span").textContent = hours;
+                elements.minutes.querySelector("span").textContent = minutes;
+
+                if (timeLeft < 0) {
+                    elements.days.querySelector("span").textContent = 0;
+                    elements.hours.querySelector("span").textContent = 0;
+                    elements.minutes.querySelector("span").textContent = 0;
+                }
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        events.forEach(startCountdown);
+    </script>
+</body>
+</html>

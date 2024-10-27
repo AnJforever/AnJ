@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>A&J</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: rgb(255, 255, 255);
+            background-image: url('images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    
+        header {
+            background-color: rgba(206, 87, 103, 0.8);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 200px;
+        }
+    
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+    
+        header p {
+            margin: 10px 0;
+        }
+    
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+    
+        .uptime {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+    
+        .uptime div {
+            margin: 10px;
+            padding: 20px;
+            background-color: #c04b5b;
+            border-radius: 10px;
+            text-align: center;
+        }
+    
+        .uptime div h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+    
+        .uptime div p {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+        }
+        
+        /* Style for the popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            background-color: white;
+            border: 2px solid #000;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Close button */
+        .popup .close {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>A&J for life</h1>
+    <p>We Fell in Love on July 23rd, 2024 </p>
+    <p>Since then i stopped using google cos she got everything i search</p>
+</header>
+
+<div class="container">
+    <h2>Time That Passed Since We Fell in Love</h2>
+    <div class="uptime">
+        <div>
+            <h2 id="months">0</h2>
+            <p>Months</p>
+        </div>
+        <div>
+            <h2 id="days">0</h2>
+            <p>Days</p>
+        </div>
+        <div>
+            <h2 id="hours">0</h2>
+            <p>Hours</p>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Section -->
+<div id="popup" class="popup">
+    <button class="close" onclick="closePopup()">×</button>
+    <img id="popupImage" src="" alt="Popup Image" width="300">
+</div>
+
+<script>
+    const imageCount = 15;
+
+    function showPopup() {
+        const popup = document.getElementById('popup');
+        const popupImage = document.getElementById('popupImage');
+
+        // Generate a random image index
+        const randomImageIndex = Math.floor(Math.random() * imageCount) + 1;
+
+        // Set the random image source
+        popupImage.src = `images/popup${randomImageIndex}.jpg`;
+
+        // Show the popup
+        popup.style.display = 'block';
+
+        // Hide the popup after 5 seconds
+        setTimeout(closePopup, 5000);
+    }
+
+    function closePopup() {
+        const popup = document.getElementById('popup');
+        popup.style.display = 'none';
+    }
+
+    // Show popup every 2 minutes (120,000 ms)
+    setInterval(showPopup, 60000 );
+</script>
+
+<!-- Random Picker Section -->
+<section id="randomPicker">
+    <h2>yk whats this for</h2>
+    <button id="pickButton">Press and pray</button>
+    <p id="result"></p>
+</section>
+
+<style>
+    #randomPicker {
+        text-align: center;
+        margin: 50px 0;
+    }
+
+    #pickButton {
+        background-color: #f2f2f2;
+        color: #c04b5b;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    #result {
+        font-size: 24px;
+        margin-top: 20px;
+        color: white;
+    }
+</style>
+
+<script>
+    const options = [
+        "The Little Bridge", "The Square", "Delicious Improvisation", "In the Shower", 
+        "Upside Down Cake", "North-South", "In the Stairway", "The Crossbow", "Birdsong", "Harmonic Duet"
+        // Add more options as needed
+    ];
+
+    function pickRandomOption() {
+        const randomIndex = Math.floor(Math.random() * options.length);
+        document.getElementById('result').innerText = `So we do: ${options[randomIndex]}`;
+    }
+
+    document.getElementById('pickButton').addEventListener('click', pickRandomOption);
+</script>
+
+<div class="container">
+    <button onclick="window.open('bucketlist.html', '_blank')">Bucket List</button>
+    <button onclick="window.open('home.html', '_blank')">hehe</button>
+    <button onclick="window.open('gallery.html', '_blank')">Our Memories</button>
+    <button onclick="window.open('calendar.html', '_blank')">Countdownn</button>
+</div>
+
+<style>
+    button {
+        background-color: #c04b5b;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        margin: 10px;
+    }
+</style>
+
+<script>
+    const loveDate = new Date("2024-06-23T00:00:00");
+
+    function updateUptime() {
+        const now = new Date();
+        const diff = now - loveDate;
+
+        const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+
+        document.getElementById('months').innerText = months;
+        document.getElementById('days').innerText = days;
+        document.getElementById('hours').innerText = hours;
+    }
+
+    setInterval(updateUptime, 1000);
+</script>
+
+</body>
+</html>
